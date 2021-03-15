@@ -10,7 +10,11 @@ type CheckFunc func(page *Page) error
 
 func checkTitle(page *Page) error {
 	const minLength = 10
-	const maxLength = 170
+	const maxLength = 100
+
+	if page.Title == "" {
+		return errors.New("title is missing")
+	}
 	if len(page.Title) > maxLength {
 		return fmt.Errorf("title is too long (%d > %d)", len(page.Title), maxLength)
 	} else if len(page.Title) < minLength {
@@ -28,10 +32,19 @@ func checkExcerpt(page *Page) error {
 }
 
 func checkMetaDescription(page *Page) error {
+	const minLength = 100
+	const maxLength = 160
+
 	if page.MetaDescription == "" {
 		return errors.New("meta description is empty")
 	}
-	return nil
+	if len(page.MetaDescription) > maxLength {
+		return fmt.Errorf("meta description is too long (%d > %d)", len(page.MetaDescription), maxLength)
+	} else if len(page.MetaDescription) < minLength {
+		return fmt.Errorf("meta description is too short (%d < %d)", len(page.MetaDescription), minLength)
+	} else {
+		return nil
+	}
 }
 
 func checkFeatureImage(page *Page) error {
@@ -46,7 +59,7 @@ func checkText(page *Page) error {
 		return errors.New("text is missing")
 	}
 
-	const minWordCount = 1000
+	const minWordCount = 800
 	words := wordCount(page.Text)
 	if words < minWordCount {
 		return fmt.Errorf("text is too short (%d < %d)", words, minWordCount)
