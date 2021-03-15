@@ -48,5 +48,6 @@ func main() {
 		}
 	}
 
-	log.Infof("%d of %d pages have SEO errors", pagesWithErrors, len(posts.Posts))
+	percent := 100.0 / float64(len(posts.Posts)) * float64(pagesWithErrors)
+	log.Infof("%d (%.2f%%) of %d pages have SEO errors", pagesWithErrors, percent, len(posts.Posts))
 }

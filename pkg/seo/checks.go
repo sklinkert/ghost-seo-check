@@ -9,8 +9,9 @@ import (
 type CheckFunc func(page *Page) error
 
 func checkTitle(page *Page) error {
-	const minLength = 10
-	const maxLength = 100
+	// https://moz.com/learn/seo/title-tag
+	const minLength = 20
+	const maxLength = 60
 
 	if page.Title == "" {
 		return errors.New("title is missing")
@@ -32,7 +33,8 @@ func checkExcerpt(page *Page) error {
 }
 
 func checkMetaDescription(page *Page) error {
-	const minLength = 100
+	// https://moz.com/learn/seo/meta-description
+	const minLength = 50
 	const maxLength = 160
 
 	if page.MetaDescription == "" {
@@ -59,7 +61,7 @@ func checkText(page *Page) error {
 		return errors.New("text is missing")
 	}
 
-	const minWordCount = 800
+	const minWordCount = 500
 	words := wordCount(page.Text)
 	if words < minWordCount {
 		return fmt.Errorf("text is too short (%d < %d)", words, minWordCount)
