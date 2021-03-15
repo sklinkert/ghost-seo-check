@@ -3,6 +3,7 @@ package seo
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 type CheckFunc func(page *Page) error
@@ -38,4 +39,26 @@ func checkFeatureImage(page *Page) error {
 		return errors.New("feature image is missing")
 	}
 	return nil
+}
+
+func checkText(page *Page) error {
+	if page.Text == "" {
+		return errors.New("text is missing")
+	}
+
+	const minWordCount = 1000
+	words := wordCount(page.Text)
+	if words < minWordCount {
+		return fmt.Errorf("text is too short (%d < %d)", words, minWordCount)
+	}
+	return nil
+}
+
+func wordCount(s string) int {
+	words := strings.Fields(s)
+	m := make(map[string]int)
+	for _, word := range words {
+		m[word] += 1
+	}
+	return len(m)
 }
