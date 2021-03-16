@@ -7,6 +7,7 @@ type Page struct {
 	MetaDescription string
 	MetaTitle       string
 	FeatureImage    string
+	Tags            []string
 }
 
 func CheckPost(page Page) (seoErrors []error) {
@@ -16,6 +17,7 @@ func CheckPost(page Page) (seoErrors []error) {
 		checkMetaDescription,
 		checkFeatureImage,
 		checkText,
+		checkTags,
 	}
 	for _, check := range checks {
 		var seoError = check(&page)

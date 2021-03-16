@@ -29,6 +29,26 @@ func main() {
 
 	var pagesWithErrors = 0
 	for _, post := range posts.Posts {
+		//if post.MetaDescription == ""	{
+		//	if strings.Contains(post.Title, "Woche") {
+		//		continue
+		//	}
+		//		post.MetaDescription = strings.Title(post.Tags[0].Name) + ""
+		//		log.Infof("New: %s",post.MetaDescription)
+		//
+		//		updatedPost := ghost.Post {
+		//			ID: post.ID,
+		//			MetaDescription: post.MetaDescription,
+		//			UpdatedAt: post.UpdatedAt,
+		//			MobileDoc: post.MobileDoc,
+		//			PublishedAt: post.PublishedAt,
+		//		}
+		//		pagesWithErrors++
+		//		if err := ghostAPI.AdminUpdatePost(updatedPost); err != nil {
+		//			log.WithError(err).Fatal("update")
+		//	}
+		//}
+
 		var seoPage = seo.Page{
 			Title:           post.Title,
 			Text:            post.MobileDoc,
@@ -36,6 +56,10 @@ func main() {
 			MetaTitle:       post.MetaTitle,
 			Excerpt:         post.Excerpt,
 			FeatureImage:    post.FeatureImage,
+		}
+
+		for _, tag := range post.Tags {
+			seoPage.Tags = append(seoPage.Tags, tag.Name)
 		}
 
 		seoErrors := seo.CheckPost(seoPage)
@@ -49,5 +73,5 @@ func main() {
 	}
 
 	percent := 100.0 / float64(len(posts.Posts)) * float64(pagesWithErrors)
-	log.Infof("%d (%.2f%%) of %d pages have SEO errors", pagesWithErrors, percent, len(posts.Posts))
+	log.Infof("%d (%.2f%%) out of %d pages have SEO errors", pagesWithErrors, percent, len(posts.Posts))
 }

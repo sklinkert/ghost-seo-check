@@ -61,10 +61,17 @@ func checkText(page *Page) error {
 		return errors.New("text is missing")
 	}
 
-	const minWordCount = 500
+	const minWordCount = 300
 	words := wordCount(page.Text)
 	if words < minWordCount {
 		return fmt.Errorf("text is too short (%d < %d)", words, minWordCount)
+	}
+	return nil
+}
+
+func checkTags(page *Page) error {
+	if len(page.Tags) == 0 {
+		return errors.New("no tags set")
 	}
 	return nil
 }
